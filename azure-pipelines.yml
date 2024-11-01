@@ -1,0 +1,22 @@
+name: pipelinewithkhanshab
+trigger:
+ branches:
+  include:
+    - main
+pool: autopool
+stages:
+  - stage: terraforminstall
+    jobs:
+      - job: tnstallinit
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendAzureRmResourceGroupName: 'forpipeline'
+            backendAzureRmStorageAccountName: 'mypipelinestorage'
+            backendAzureRmContainerName: 'pipelinecontainer'
+            backendAzureRmKey: 'terraform.tfstate'
